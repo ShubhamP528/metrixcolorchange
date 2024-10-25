@@ -93,9 +93,9 @@ const App = () => {
     // <Temp />
     // <HorizontalProductCarousel />
     // <Encryption />
-    <FileUpload />
+    // <FileUpload />
     // <MultiFileUploadWithSingleProgressBar />
-    // <VideoCalling />
+    <VideoCalling />
     // <LiveStreamComponent />
   );
 };

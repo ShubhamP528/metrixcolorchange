@@ -68,13 +68,35 @@
 
 import React from "react";
 import ColorMatrix from "./Componants/ColorMatrix";
+import TextExtractor from "./Componants/TextExtracter";
+import GoogleDrivePicker from "./Componants/DriveFile";
+import ProductPage from "./Componants/Product";
+import ProductDetailPage from "./Componants/ProductDetails";
+import Temp from "./Componants/Temp";
+import Encryption from "./Componants/Encryption";
+import FileUpload from "./Componants/ProgressBar";
+import HorizontalProductCarousel from "./Componants/HorizentalProducts";
+import LiveStreamComponent from "./Componants/LiveStraming";
+import MultiFileUploadWithSingleProgressBar from "./Componants/MultupleFileUploadProgressBar";
+import VideoCalling from "./Componants/VideoCalling";
 
 const App = () => {
   return (
-    <div style={{ display: "grid", placeItems: "center" }}>
-      <h1>Color Matrix</h1>
-      <ColorMatrix />
-    </div>
+    // <div style={{ display: "grid", placeItems: "center" }}>
+    //   <h1>Color Matrix</h1>
+    //   <ColorMatrix />
+    // </div>
+    // <TextExtractor />
+    // <GoogleDrivePicker />
+    // <ProductDetailPage />
+    // <ProductPage />
+    // <Temp />
+    // <HorizontalProductCarousel />
+    // <Encryption />
+    <FileUpload />
+    // <MultiFileUploadWithSingleProgressBar />
+    // <VideoCalling />
+    // <LiveStreamComponent />
   );
 };
 

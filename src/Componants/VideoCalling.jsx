@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import SimplePeer from "simple-peer";
+import process from "process"; // Polyfill for process
 
 const App = () => {
   const [myStream, setMyStream] = useState(null);

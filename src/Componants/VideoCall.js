@@ -9,7 +9,7 @@ const VideoCall = () => {
   const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    socket.current = io("http://localhost:5000");
+    socket.current = io("https://videocalling-backend.onrender.com");
     const peerConnection = new RTCPeerConnection();
 
     navigator.mediaDevices

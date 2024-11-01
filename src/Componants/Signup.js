@@ -8,10 +8,13 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/users/signup", {
-        username,
-        password,
-      });
+      await axios.post(
+        "https://videocalling-backend.onrender.com/api/users/signup",
+        {
+          username,
+          password,
+        }
+      );
       alert("Signup successful, you can now log in.");
     } catch (error) {
       console.error(error);

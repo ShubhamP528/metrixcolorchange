@@ -22,13 +22,14 @@ const FileUploadWithProgress = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/v1/courtroom/fileUpload",
+        "http://localhost:8000/api/v1/documentDrafter/uploadResumableFile",
         formData
       );
-      setUploadUrl(response.data.data.uploadUrl);
+      setUploadUrl(response.data.uploadUrl);
 
       // Now proceed with uploading the file using the resumable upload URL
-      uploadFileWithProgress(response.data.data.uploadUrl);
+      await uploadFileWithProgress(response.data.uploadUrl);
+      console.log("DONE uploading");
     } catch (error) {
       console.error("Error initiating upload:", error);
     }
@@ -49,7 +50,11 @@ const FileUploadWithProgress = () => {
     xhr.setRequestHeader("Content-Type", file.type);
 
     // Send the file
-    xhr.send(file);
+    const resp = await xhr.send(file);
+
+    console.log("DONE BHAIYA");
+
+    console.log(resp);
 
     xhr.onload = () => {
       if (xhr.status === 200) {
@@ -59,6 +64,10 @@ const FileUploadWithProgress = () => {
       }
     };
   };
+
+  if (uploadProgress === 100) {
+    console.log("Upload progress ", uploadProgress);
+  }
 
   return (
     <div>

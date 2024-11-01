@@ -78,7 +78,7 @@ import FileUpload from "./Componants/ProgressBar";
 import HorizontalProductCarousel from "./Componants/HorizentalProducts";
 import LiveStreamComponent from "./Componants/LiveStraming";
 import MultiFileUploadWithSingleProgressBar from "./Componants/MultupleFileUploadProgressBar";
-import VideoCalling from "./Componants/VideoCalling";
+import Main from "./Main";
 
 const App = () => {
   return (
@@ -95,8 +95,9 @@ const App = () => {
     // <Encryption />
     // <FileUpload />
     // <MultiFileUploadWithSingleProgressBar />
-    <VideoCalling />
+    // <VideoCalling />
     // <LiveStreamComponent />
+    <Main />
   );
 };
 

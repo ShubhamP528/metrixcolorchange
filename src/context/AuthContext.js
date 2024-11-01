@@ -8,12 +8,19 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    console.log("token", token);
     if (token) {
       const decoded = jwtDecode(token);
       setUser(decoded);
-      console.log(decoded);
+      //   console.log(decoded);
     }
   }, []);
+
+  useEffect(() => {
+    console.log("UseEffect");
+  }, []);
+
+  console.log("setUser");
 
   const login = (token) => {
     localStorage.setItem("token", token);

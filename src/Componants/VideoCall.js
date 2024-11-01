@@ -8,6 +8,8 @@ const VideoCall = () => {
   const socket = useRef();
   const { user } = useContext(AuthContext);
 
+  console.log(user);
+
   useEffect(() => {
     socket.current = io("https://videocalling-backend.onrender.com");
     const peerConnection = new RTCPeerConnection();

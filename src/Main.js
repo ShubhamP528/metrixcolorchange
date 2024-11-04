@@ -1,24 +1,17 @@
-import React from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import AuthProvider from "./context/AuthContext";
-import VideoCall from "./Componants/VideoCall";
-import Login from "./Componants/Login";
-import Signup from "./Componants/Signup";
+import { Routes, Route } from "react-router-dom";
+import "./App.css";
+import LobbyScreen from "./screens/Lobby";
+import RoomPage from "./screens/Room";
 
-const Main = () => {
+function Main() {
   return (
-    <AuthProvider>
-      <Router>
-        <div className="p-4">
-          <Routes>
-            <Route path="/" element={<VideoCall />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Routes>
-        </div>
-      </Router>
-    </AuthProvider>
+    <div className="App">
+      <Routes>
+        <Route path="/" element={<LobbyScreen />} />
+        <Route path="/room/:roomId" element={<RoomPage />} />
+      </Routes>
+    </div>
   );
-};
+}
 
 export default Main;

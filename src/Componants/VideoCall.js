@@ -1,75 +1,73 @@
-import React, { useEffect, useRef, useContext } from "react";
+import React, { useEffect, useRef } from "react";
 import { io } from "socket.io-client";
-import { AuthContext } from "../context/AuthContext";
 
 const VideoCall = () => {
-  const localVideoRef = useRef();
-  const remoteVideoRef = useRef();
-  const socket = useRef();
-  const { user } = useContext(AuthContext);
-
-  console.log(user);
+  const localVideoRef = useRef(null);
+  const remoteVideoRefs = useRef([]);
+  const socketRef = useRef();
+  const peerConnections = useRef({}); // Store peer connections
 
   useEffect(() => {
-    socket.current = io("https://videocalling-backend.onrender.com");
-    const peerConnection = new RTCPeerConnection();
+    socketRef.current = io("http://localhost:5000", { withCredentials: true });
 
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
-        localVideoRef.current.srcObject = stream;
-        stream
-          .getTracks()
-          .forEach((track) => peerConnection.addTrack(track, stream));
+    const handleNewUser = async (userId) => {
+      const peerConnection = new RTCPeerConnection();
+
+      // Get local stream and add it to the connection
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      localVideoRef.current.srcObject = stream;
+
+      stream.getTracks().forEach((track) => {
+        peerConnection.addTrack(track, stream);
       });
 
-    peerConnection.ontrack = (event) => {
-      remoteVideoRef.current.srcObject = event.streams[0];
+      // Handle incoming remote stream
+      peerConnection.ontrack = (event) => {
+        const remoteVideo = document.createElement("video");
+        remoteVideo.srcObject = event.streams[0];
+        remoteVideo.play();
+        remoteVideoRefs.current.push(remoteVideo);
+        document.body.appendChild(remoteVideo); // Append to the DOM or a specific container
+      };
+
+      // Emit a signal to notify new user
+      socketRef.current.emit("join", userId);
+
+      // Store the peer connection
+      peerConnections.current[userId] = peerConnection;
+
+      // Handle ICE candidates
+      peerConnection.onicecandidate = ({ candidate }) => {
+        if (candidate) {
+          socketRef.current.emit("ice-candidate", { candidate, userId });
+        }
+      };
     };
 
-    socket.current.on("offer", async (offer) => {
-      await peerConnection.setRemoteDescription(
-        new RTCSessionDescription(offer)
-      );
-      const answer = await peerConnection.createAnswer();
-      await peerConnection.setLocalDescription(answer);
-      socket.current.emit("answer", answer);
-    });
+    socketRef.current.on("user-joined", handleNewUser);
 
-    socket.current.on("answer", (answer) => {
-      peerConnection.setRemoteDescription(new RTCSessionDescription(answer));
-    });
-
-    socket.current.on("ice-candidate", (candidate) => {
-      peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
-    });
-
-    peerConnection.onicecandidate = (event) => {
-      if (event.candidate) {
-        socket.current.emit("ice-candidate", event.candidate);
-      }
-    };
-
+    // Clean up on unmount
     return () => {
-      socket.current.disconnect();
+      socketRef.current.disconnect();
     };
   }, []);
 
   return (
-    <div className="flex flex-col items-center">
-      <h2 className="text-xl mb-4">Welcome, {user.username}</h2>
+    <div>
       <video
         ref={localVideoRef}
         autoPlay
         playsInline
-        className="w-full h-auto mb-4"
+        muted
+        style={{ width: "300px" }}
       />
-      <video
-        ref={remoteVideoRef}
-        autoPlay
-        playsInline
-        className="w-full h-auto"
-      />
+      {/* Render remote video elements */}
+      {remoteVideoRefs.current.map((video, index) => (
+        <div key={index}>{video}</div>
+      ))}
     </div>
   );
 };

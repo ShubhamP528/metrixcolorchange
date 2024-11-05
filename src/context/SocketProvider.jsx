@@ -9,7 +9,10 @@ export const useSocket = () => {
 };
 
 export const SocketProvider = (props) => {
-  const socket = useMemo(() => io("localhost:8080"), []);
+  const socket = useMemo(
+    () => io("https://videocalling-backend.onrender.com"),
+    []
+  );
 
   return (
     <SocketContext.Provider value={socket}>
